@@ -1,0 +1,18 @@
+1. 同时连接低精度和睡眠盒，怎么输出图像的
+
+uartReceiveTask rec data 1705402915509 b'\xaa#\xff\x0f\xff\x0f\xff\x0f\x0c\x0f\xff\x0f&\t\xff\x0f\xec\x0f\xff\x0f\xff\x0f\xff\x0f;\n\xff\x0f\xff\x0f\xff\x0f\xff\x0fU'
+Found start byte: 0xaa
+collect_raw_packet Successfully collected protocol packet: aa23ff0fff0fff0f0c0fff0f2609ff0fec0fff0fff0fff0f3b0aff0fff0fff0fff0f55
+packet长度:35
+uartReceiveTask rec data 1705402915614 b'\xaa#\xff\x0f\xff\x0f\xff\x0f\x08\x0f\xff\x0f+\t\xff\x0f\xec\x0f\xff\x0f\xff\x0f\xff\x0f9\n\xff\x0f\xff\x0f\xff\x0f\xff\x0fU'
+Found start byte: 0xaa
+collect_raw_packet Successfully collected protocol packet: aa23ff0fff0fff0f080fff0f2b09ff0fec0fff0fff0fff0f390aff0fff0fff0fff0f55
+packet长度:35
+uartReceiveTask rec data 1705402915703 b'\xaa#\xff\x0f\xff\x0f\xff\x0f\xfc\x0e\xff\x0fH\t\xff\x0f\xf4\x0f\xff\x0f\xff\x0f\xff\x0f;\n\xff\x0f\xff\x0f\xff\x0f\xff\x0fU'
+Found start byte: 0xaa
+collect_raw_packet Successfully collected protocol packet: aa23ff0fff0fff0ffc0eff0f4809ff0ff40fff0fff0fff0f3b0aff0fff0fff0fff0f55
+packet长度:35
+
+2. 控制气囊程序，读取气囊压力值程序
+
+3. 

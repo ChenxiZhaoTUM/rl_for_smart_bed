@@ -1,8 +1,7 @@
-
-
 class ProtocolDatasFIFO:
     def __init__(self):
         self.data = bytearray()
+
     def enqueue(self, data):
         self.data.extend(data)
 
@@ -20,8 +19,8 @@ class ProtocolDatasFIFO:
     def get_fifo_length(self):
         return len(self.data)
 
-def collect_raw_packet(rawdata,p_Packet):
 
+def collect_raw_packet(rawdata, p_Packet):
     # 检查输入参数
     if p_Packet is None:
         print("Error: Invalid input parameter p_Packet is None")
@@ -40,7 +39,7 @@ def collect_raw_packet(rawdata,p_Packet):
             break
         else:
             rawdata.pop(0)
-            if(len(rawdata) == 0):
+            if len(rawdata) == 0:
                 print("Not found start byte")
                 return -1
 
@@ -50,11 +49,11 @@ def collect_raw_packet(rawdata,p_Packet):
         print("Warning: Unable to read packet length from FIFO")
         return -1
 
-    if ((packet_len == 35 and start_byte == 0XAA) or (packet_len == 17 and start_byte == 0xAB)) != 1:  
+    if ((packet_len == 35 and start_byte == 0XAA) or (packet_len == 17 and start_byte == 0xAB)) != 1:
         print("Warning: Invalid packet length:", packet_len)
         rawdata.pop(0)
         return -2
-    
+
     # 检查协议包尾部
     fifoLength = len(rawdata)
     if packet_len > fifoLength:
@@ -69,15 +68,14 @@ def collect_raw_packet(rawdata,p_Packet):
     # 检查协议包CRC
 
     # 从FIFO中读取协议包字段
-        # 从FIFO中读取协议包字段
-    if(start_byte == 0XAA):
+    # 从FIFO中读取协议包字段
+    if start_byte == 0XAA:
         for i in range(35):
             p_Packet.append(rawdata.pop(0))
-    elif(start_byte == 0XAB):
+    elif start_byte == 0XAB:
         for i in range(17):
             p_Packet.append(rawdata.pop(0))
     # 输出调试信息
     print("collect_raw_packet Successfully collected protocol packet:", p_Packet.hex())
 
-
-    return 0     
+    return 0

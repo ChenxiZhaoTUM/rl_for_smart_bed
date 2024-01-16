@@ -21,6 +21,9 @@ class SmartBedEnv(gym.Env):
         self.ref_heart_rate = 60
         self.ref_breath_rate = 18
 
+        self.previous_pressure_values = np.zeros(16)
+        self.previous_action = np.zeros(6)  # here need to change to the previous inner pressure of the airbag
+
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
         self.total_reward = 0.0
@@ -66,37 +69,24 @@ class SmartBedEnv(gym.Env):
 
         if self.obs[22] == 0:
             done = True
+
+        pressure_variance = np.var(pressure_values)
+
+        pressure_change_continuity = np.mean(np.abs(self.previous_pressure_values - pressure_values))
+        self.previous_pressure_values = pressure_values.copy()
+
+        action_change_continuity = np.mean(np.abs(self.previous_action - action))
+        self.previous_action = action.copy()
+
+        # set reward
+        # pressure distribution
+        if pressure_variance == 0:
+            reward += 10.0
         else:
-            # set reward
-            # pressure distribution
-            pressure_variance = np.var(pressure_values)
-            if pressure_variance == 0:
-                reward += 10.0
-            else:
-                reward += 1.0 / pressure_variance
+            reward += 1.0 / pressure_variance
 
-            # heart rate
-            heart_rate_diff = np.abs(self.obs[16] - self.ref_heart_rate)
-            if heart_rate_diff <= 5:
-                reward += 1.0
-            else:
-                reward -= 1.0
-
-            # breath rate
-            breath_rate_diff = np.abs(self.obs[17] - self.ref_breath_rate)
-            if breath_rate_diff <= 2:
-                reward += 1.0
-            else:
-                reward -= 1.0
-
-            # body motion
-            reward += 1.0/self.obs[18]
-
-            # snoring level
-            reward += 1.0 / self.obs[19]
-
-            # stability coefficient
-            reward += 1.0 / self.obs[21]
+        reward -= pressure_change_continuity
+        reward -= action_change_continuity
 
         if done:
             self.episode += 1
