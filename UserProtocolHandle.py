@@ -76,6 +76,6 @@ def collect_raw_packet(rawdata, p_Packet):
         for i in range(17):
             p_Packet.append(rawdata.pop(0))
     # 输出调试信息
-    print("collect_raw_packet Successfully collected protocol packet:", p_Packet.hex())
+    # print("collect_raw_packet Successfully collected protocol packet:", p_Packet.hex())
 
     return 0

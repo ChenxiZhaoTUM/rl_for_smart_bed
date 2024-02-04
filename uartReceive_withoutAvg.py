@@ -4,7 +4,7 @@ from threading import Thread
 import time
 from queue import Queue
 from UserProtocolHandle import ProtocolDatasFIFO, collect_raw_packet
-from single_line_data_for_real_time import LowPressureData2img, load_model
+from single_line_data_for_real_time_withoutAvg import LowPressureData2img, load_model
 import pytz
 from datetime import datetime
 
@@ -46,6 +46,7 @@ class userUartReceive:
                         packet.clear()
                         collect_raw_packet(cData, packet)
                         curData = timestamp + packet.hex().upper()
+
                         if len(packet) == 35:
                             pressDataList.append(curData)
                             # if len(pressDataList) < 10:
@@ -54,7 +55,7 @@ class userUartReceive:
                             #     pressDataList[0:9] = pressDataList[1:-1]
                             #     pressDataList[-1] = curData
                         elif len(packet) == 17:
-                            LowPressureData2img(load_model(), pressDataList, curData)
+                            LowPressureData2img(load_model(), pressDataList[-1], curData)
                             pressDataList = []
 
             else:
