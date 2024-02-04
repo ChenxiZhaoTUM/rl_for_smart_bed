@@ -145,10 +145,8 @@ global_tensor_list = []
 i = 0
 
 
-def result_of_CRNN(pressure_line, sleep_line):
+def result_of_CRNN(model, pressure_line, sleep_line):
     global global_tensor_list
-
-    netG = load_model()
 
     pressure_time, pressure_value = process_pressure_values(pressure_line)
     sleep_time, sleep_value = process_sleep_values(sleep_line)
@@ -173,7 +171,7 @@ def result_of_CRNN(pressure_line, sleep_line):
             combined_tensor = combined_tensor.clone().unsqueeze(0)  # [1, 10, 12, 32, 64]
             # print(f"Combined tensor shape: {combined_tensor.shape}")
 
-            output = netG(combined_tensor)
+            output = model(combined_tensor)
             output[output < 0] = 0
             # print(f"Output tensor shape: {output.shape}")
             denormalized_output = output_denormalization(output.detach().numpy())

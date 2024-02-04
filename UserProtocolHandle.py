@@ -29,7 +29,7 @@ def collect_raw_packet(rawdata, p_Packet):
     # 协议包解析
     start_byte = None
     index = 0
-    while (len(rawdata)):
+    while len(rawdata):
         # 从FIFO中读取字节，直到找到起始字节0xA5
         data = rawdata[index]
         if data == 0xAA or data == 0xAB:
