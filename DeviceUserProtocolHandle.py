@@ -39,9 +39,6 @@ class lowPressInfoCmdParam(ctypes.BigEndianStructure):
     ]
 
 
-c_uint8 = ctypes.c_uint8
-
-
 class map_bits(ctypes.LittleEndianStructure):
     _fields_ = [
         ("xiaoTui", c_uint8, 1),
@@ -146,9 +143,8 @@ class ProtocolDatasFIFO:
         print("Successfully collected protocol packet:", p_Packet.hex())
         return 0
 
-    # 校验数据生成
 
-
+# 校验数据生成
 def CheckSum(data, len):
     crcNum = 0
     if len:
@@ -174,7 +170,6 @@ def PacketGeneration(cmd, data, dataLen):
     return sendData
 
 
-# 气囊充放气控制
 '''
 index:0 右侧气囊 1:左侧气囊
 action: 1:充气 2:暂停 3:放气
@@ -183,6 +178,7 @@ time:1-20S 或0XFF(一直充放)
 '''
 
 
+# 气囊充放气控制
 def airControlCmdPacketSend(index, action, map, time):
     data = bytearray(4)
     data[0] = index

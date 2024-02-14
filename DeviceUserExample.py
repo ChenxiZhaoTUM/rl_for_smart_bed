@@ -39,7 +39,7 @@ class packetHandleThread(QThread):
     def run(self):
         while True:
             data = uartFifo.get()
-            print("packetHandleTask  packet data:", data.hex())
+            print("packetHandleTask packet data:", data.hex())
             if len(data) == 0:
                 continue
             packet = bytearray()
@@ -50,8 +50,7 @@ class packetHandleThread(QThread):
                         print("get a vaild packet data")
                         cmd = packet[2]
                         packetLength = packet[1]
-                        if (
-                                cmd == 0x02 or cmd == 0x03 or cmd == 0x04 or cmd == 0x05 or cmd == 0x08 or cmd == 0x09 or cmd == 0x0A or cmd == 0X0D):
+                        if cmd == 0x02 or cmd == 0x03 or cmd == 0x04 or cmd == 0x05 or cmd == 0x08 or cmd == 0x09 or cmd == 0x0A or cmd == 0X0D:
                             print("cmdAckEvent.set(),cmd", cmd)
                             cmdAckEvent.set()
                         elif cmd == 0x06:  # 压力数据通知
@@ -70,7 +69,7 @@ class packetHandleThread(QThread):
                             cmdAckEvent.set()
 
 
-class UserExample():
+class UserExample:
     def __init__(self, parent=None):
         # super().__init__(parent)
         self.cmdLock = Lock()
@@ -166,29 +165,27 @@ if __name__ == "__main__":
     userExample.port_open()
     if userExample.ser.is_open:
 
-        '''
-        #气囊控制
-        index  =  0    #0:右侧 1：左侧
-        action =  2    #1充气 2停止 3放气
-        cfgTime = 0XFF #1-20(S) 或0XFF(一直执行)
+        # 气囊控制
+        index = 0  # 0:右侧 1左侧
+        action = 2  # 1充气 2停止 3放气
+        cfgTime = 0XFF  # 1-20(S) 或0XFF(一直执行)
         mapByte = airMap()
-        mapByte.bit.Jian    = 1
-        mapByte.bit.Xiong   = 1
-        mapByte.bit.Yao     = 1
-        mapByte.bit.Tun     = 1
-        mapByte.bit.daTui   = 1
+        mapByte.bit.Jian = 1
+        mapByte.bit.Xiong = 1
+        mapByte.bit.Yao = 1
+        mapByte.bit.Tun = 1
+        mapByte.bit.daTui = 1
         mapByte.bit.xiaoTui = 1
         print(str(mapByte.char))
-        if(mapByte.char == 0):#需要操作的位置需要置1，如果都为0即没有需要操作的位置，该参数无效
-            print("请选择需要控制的气囊") 
-        else:          
-            cmdPacketData = DeviceUserProtocolHandle.airControlCmdPacketSend(index,action,mapByte.char,cfgTime)
-            if userExample.cmdPacketExec(cmdPacketData) == False:
+        if mapByte.char == 0:  # 需要操作的位置需要置1，如果都为0即没有需要操作的位置，该参数无效
+            print("请选择需要控制的气囊")
+        else:
+            cmdPacketData = DeviceUserProtocolHandle.airControlCmdPacketSend(index, action, mapByte.char, cfgTime)
+            if not userExample.cmdPacketExec(cmdPacketData):
                 print("Cmd Error", "指令无应答")
             else:
-                print("Cmd success")                 
-        userExample.port_close()               
-        '''
+                print("Cmd success")
+        userExample.port_close()
 
         # 气压监测控制：
         intervalTime = 500  # 监测间隔（500 - 5000）
